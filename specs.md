@@ -1,11 +1,11 @@
 ## IO (контроллер ввода/вывода)
 
 #### управляющие сигналы
-- in read_addr 
-- in write_addr 
-- in read_data 
-- in write_data 
-- in data_size
+- in io_read_addr 
+- in io_write_addr 
+- in io_read_data 
+- in io_write_data 
+- in io_data_size
 
 #### базовые сигналы
 - in clk
@@ -43,9 +43,9 @@
 ## REG (регистр)
 
 #### управляющие сигналы
-- in read_value_from_bus 
-- in write_value_to_bus 
-- in read_value_from_alu
+- in reg_read_from_bus 
+- in reg_write_to_bus 
+- in reg_read_from_alu
 
 #### базовые сигналы
 - in clk
@@ -60,9 +60,9 @@
 ## FLAGS (регистр флагов)
 
 #### управляющие сигналы
-- in read_flags_from_bus 
-- in read_flags_to_bus 
-- in read_flags_from_alu
+- in flags_read_from_bus 
+- in flags_read_to_bus 
+- in flags_read_from_alu
 
 #### базовые сигналы
 - in clk
@@ -78,13 +78,13 @@
 
 ---
 
-## alu (арифметическо-логическое устройство)
+## ALU (арифметическо-логическое устройство)
 
 #### управляющие сигналы
-- in add
-- in nand
-- in shr
-- in shl
+- in alu_add
+- in alu_nand
+- in alu_shr
+- in alu_shl
 
 #### базовые сигналы
 - in clk
@@ -107,9 +107,9 @@
 ## IP (регистр адреса инструкции)
 
 #### управляющие сигналы
-- in inc
-- in write
-- in read
+- in ip_inc
+- in ip_write
+- in ip_read
 
 #### базовые сигналы
 - in clk
@@ -123,7 +123,7 @@
 ## IR (регистр инструкции)
 
 #### управляющие сигналы
-- in read
+- in ir_read
 
 #### базовые сигналы
 - in clk
@@ -140,7 +140,7 @@
 ## COUNT (счётчик микрооперации)
 
 #### управляющие сигналы
-- in reset
+- in count_reset
 
 #### базовые сигналы
 - in clk
@@ -165,18 +165,36 @@
 - in clk
 
 #### управляющие сигналы
-- out x32 control_signals
+- out io_read_addr
+- out io_write_addr
+- out io_read_data
+- out io_write_data
+- out io_data_size
+- out reg_read_from_bus 
+- out reg_write_to_bus 
+- out reg_read_from_alu
+- out flags_read_from_bus 
+- out flags_read_to_bus 
+- out flags_read_from_alu
+- out alu_add
+- out alu_nand
+- out alu_shr
+- out alu_shl
+- out ip_inc
+- out ip_write
+- out ip_read
+- out ir_read
+- out count_reset
+- out clock_stop
 
 ---
 
 ## CLOCK (генератор тактового сигнала)
 
 #### управляющие сигналы
-- in stop
-- in start (только ручная кнопка)
-- in step (только ручная кнопка)
+- in clock_stop
+- in clock_start (только ручная кнопка)
+- in clock_step (только ручная кнопка)
 
 #### базовые сигналы
 - out clk
-
-
