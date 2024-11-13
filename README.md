@@ -10,11 +10,26 @@
 
 # Модули процессора
 
-## IO (контроллер ввода/вывода)
+## ADDR (регистр адреса)
 
 #### управляющие сигналы
 - in io_read_addr - если 1, вывод адреса в system_bus
 - in io_write_addr - если 1, ввод адреса с system_bus при переходе clk 0->1
+
+#### базовые сигналы
+- in clk
+- in/out x16 system_bus
+
+#### связь с MEM
+- out x16 mem_addr - постоянный вывод значения регистра адреса
+
+#### связь с портом ввода/вывода
+- out x8 port_addr - постоянный вывод первых 8 бит значения регистра адреса
+
+## IO (контроллер ввода/вывода)
+
+#### управляющие сигналы
+
 - in io_read_data - если 1, вывод данных в system_bus
 - in io_write_data - если 1, ввод данных с system_bus при переходе clk 0->1
 - in io_data_size - выбор размера данных (0 - 16 бит, 1 - 8 бит)
@@ -26,14 +41,12 @@
 #### связь с MEM
 - out mem_read - 1, если io_read_data=1 и адрес < 65280
 - out mem_write - 1, если io_write_data=1 и адрес < 65280
-- out x16 mem_addr - постоянный вывод значения регистра адреса
 - in/out x16 mem_data - ввод данных и вывод в system_bus, если mem_read=1, вывод данных из system_bus если mem_write=1
 - out mem_data_size - 1, если io_data_size=1
 
 #### связь с портом ввода/вывода
 - out port_read - 1, если io_read_data=1 и адрес >= 65280
 - out port_write - 1, если io_write_data=1 и адрес >= 65280
-- out x8 port_addr - постоянный вывод первых 8 бит значения регистра адреса
 - in/out x8 port_data - ввод данных и вывод первых 8 бит в system_bus, если port_read=1, вывод первых 8 бит данных из system_bus если port_write=1
 
 ## MEM (память)
@@ -44,9 +57,11 @@
 #### связь с IO
 - in mem_read - если 1, вывод данных по адресу mem_addr в mem_data
 - in mem_write - если 1, ввод данных по адресу mem_addr из mem_data при переходе clk 0->1
-- in x16 mem_addr - работа описана выше
 - in/out x16 mem_data - работа описана выше
 - in mem_data_size - если 0 - данные 16 бит, если 1 - данные 8 бит
+
+#### связь с ADDR
+- in x16 mem_addr - работа описана выше
 
 ## REG (регистр)
 
