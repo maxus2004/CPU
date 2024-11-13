@@ -114,55 +114,49 @@
 - in clk
 - in/out x16 system_bus
 
-#### связь с IR
-- out x16 ip_value - постоянный вывод значения
-
 ## IR (регистр инструкции)
 
 #### управляющие сигналы
-- in ir_read
+- in ir_read - ввод первых 8 бит значения с system_bus при переходе clk 0->1
 
 #### базовые сигналы
 - in clk
 - in x16 system_bus
 
-#### связь с IP
-- in x16 ip_value
-
 #### связь с ROM
-- out x8 ir_value
+- out x8 ir_value - постоянный вывод значения
 
 ## COUNT (счётчик микрооперации)
 
 #### управляющие сигналы
-- in count_reset
+- in count_reset - если 1, сброс значения в 0, при переходе clk 0->1
 
 #### базовые сигналы
-- in clk
+- in clk - инкрементировать значение при при переходе clk 0->1, если count_reset=0
 
 #### связь с ROM
-- out x4 count_value
+- out x4 count_value - постоянный вывод значения
 
 ## MICROCODE ROM (память микрокода / комбинационная схема управления)
 
 #### связь с IR
-- in x8 ir_value
+- in x8 ir_value - биты 0-7 адреса в ROM
 
 #### связь с COUNT
-- in x4 count_value
+- in x4 count_value - биты 8-11 адреса в ROM
 
 #### связь с FLAGS
-- in flags_zf
-- in flags_sf
-- in flags_cf
+- in flags_zf - бит 12 адреса в ROM
+- in flags_sf - бит 13 адреса в ROM
+- in flags_cf - бит 14 адреса в ROM
 
 #### базовые сигналы
-- in clk
+- in clk - вывод управляющих сигналов при переходе clk 1->0
 
 #### управляющие сигналы
-- out io_read_addr
-- out io_write_addr
-- out io_read_data
+- out io_read_addr - бит 0 значения в ROM
+- out io_write_addr - бит 1 значения в ROM
+- out io_read_data - бит 2 значения в ROM
 - out io_write_data
 - out io_data_size
 - out reg_read_from_bus 
@@ -185,9 +179,9 @@
 ## CLOCK (генератор тактового сигнала)
 
 #### управляющие сигналы
-- in clock_stop
-- in clock_start (только ручная кнопка)
-- in clock_step (только ручная кнопка)
+- in clock_stop - если 1, выключить генерацию такового сигнала
+- in clock_start (только ручная кнопка) - если 1, включить генерацию тактового сигнала
+- in clock_step (только ручная кнопка) - если 1, и генерация такового сигнала выключена, выводить clk=1, иначе если генерация такового сигнала выключена выводить clk=0
 
 #### базовые сигналы
 - out clk
