@@ -16,13 +16,13 @@
 - out mem_write
 - out x16 mem_addr
 - in/out x16 mem_data
-- out data_size
+- out mem_data_size
 
 #### связь с портом ввода/вывода
-- out io_read
-- out io_write
-- out x8 io_addr
-- in/out x8 io_data
+- out port_read
+- out port_write
+- out x8 port_addr
+- in/out x8 port_data
 
 ---
 
@@ -34,9 +34,9 @@
 #### связь с IO
 - in mem_read
 - in mem_write
-- in data_size
 - in x16 mem_addr
 - in/out x16 mem_data
+- in mem_data_size
 
 ---
 
@@ -52,8 +52,8 @@
 - in/out x16 system_bus
 
 #### связь с АЛУ
-- in x16 new_value
-- out x16 value
+- in x16 alu_result
+- out x16 reg_value
 
 ---
 
@@ -69,12 +69,12 @@
 - in/out x16 system_bus
 
 #### связь с АЛУ и УУ
-- in zf
-- in sf
-- in cf
-- out zf
-- out sf
-- out cf
+- in alu_zf
+- in alu_sf
+- in alu_cf
+- out flags_zf
+- out flags_sf
+- out flags_cf
 
 ---
 
@@ -92,15 +92,15 @@
 
 #### связь с REG
 - in x16 reg_value
-- out x16 result
+- out x16 alu_result
 
 #### связь с FLAGS
-- in zf
-- in sf
-- in cf
-- out zf
-- out sf
-- out cf
+- in flags_zf
+- in flags_sf
+- in flags_cf
+- out alu_zf
+- out alu_sf
+- out alu_cf
 
 ---
 
@@ -116,7 +116,7 @@
 - in/out x16 system_bus
 
 #### связь с IR
-- out x16 ip
+- out x16 ip_value
 
 ---
 
@@ -130,10 +130,10 @@
 - in x16 system_bus
 
 #### связь с IP
-- in x16 address
+- in x16 ip_value
 
 #### связь с ROM
-- out x8 value
+- out x8 ir_value
 
 ---
 
@@ -146,20 +146,22 @@
 - in clk
 
 #### связь с ROM
-- out x4 value
+- out x4 count_value
 
 ---
 
 ## microcode ROM (память микрокода / комбинационная схема управления)
 
 #### связь с IR
-- in x8 instruction
+- in x8 ir_value
 
 #### связь с COUNT
-- in x4 count
+- in x4 count_value
 
 #### связь с FLAGS
-- in x3 flags
+- in flags_zf
+- in flags_sf
+- in flags_cf
 
 #### базовые сигналы
 - in clk
