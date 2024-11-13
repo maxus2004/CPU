@@ -24,8 +24,6 @@
 - out x8 port_addr
 - in/out x8 port_data
 
----
-
 ## MEM (память)
 
 #### базовые сигналы
@@ -37,8 +35,6 @@
 - in x16 mem_addr
 - in/out x16 mem_data
 - in mem_data_size
-
----
 
 ## REG (регистр)
 
@@ -54,8 +50,6 @@
 #### связь с АЛУ
 - in x16 alu_result
 - out x16 reg_value
-
----
 
 ## FLAGS (регистр флагов)
 
@@ -75,8 +69,6 @@
 - out flags_zf
 - out flags_sf
 - out flags_cf
-
----
 
 ## ALU (арифметическо-логическое устройство)
 
@@ -102,8 +94,6 @@
 - out alu_sf
 - out alu_cf
 
----
-
 ## IP (регистр адреса инструкции)
 
 #### управляющие сигналы
@@ -117,8 +107,6 @@
 
 #### связь с IR
 - out x16 ip_value
-
----
 
 ## IR (регистр инструкции)
 
@@ -135,8 +123,6 @@
 #### связь с ROM
 - out x8 ir_value
 
----
-
 ## COUNT (счётчик микрооперации)
 
 #### управляющие сигналы
@@ -148,9 +134,7 @@
 #### связь с ROM
 - out x4 count_value
 
----
-
-## microcode ROM (память микрокода / комбинационная схема управления)
+## MICROCODE ROM (память микрокода / комбинационная схема управления)
 
 #### связь с IR
 - in x8 ir_value
@@ -188,8 +172,6 @@
 - out ir_read
 - out count_reset
 - out clock_stop
-
----
 
 ## CLOCK (генератор тактового сигнала)
 
