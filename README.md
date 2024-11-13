@@ -13,28 +13,28 @@
 ## IO (контроллер ввода/вывода)
 
 #### управляющие сигналы
-- in io_read_addr 
-- in io_write_addr 
-- in io_read_data 
-- in io_write_data 
-- in io_data_size
+- in io_read_addr - если 1, вывод адреса в system_bus
+- in io_write_addr - если 1, ввод адреса с system_bus при переходе clk 0->1
+- in io_read_data - если 1, вывод данных в system_bus
+- in io_write_data - если 1, ввод данных с system_bus при переходе clk 0->1
+- in io_data_size - выбор размера данных (0 - 16 бит, 1 - 8 бит)
 
 #### базовые сигналы
 - in clk
 - in/out x16 system_bus
 
 #### связь с MEM
-- out mem_read
-- out mem_write
-- out x16 mem_addr
-- in/out x16 mem_data
-- out mem_data_size
+- out mem_read - 1, если io_read_data=1 и адрес < 65280
+- out mem_write - 1, если io_write_data=1 и адрес < 65280
+- out x16 mem_addr - постоянный вывод значения регистра адреса
+- in/out x16 mem_data - ввод данных и вывод в system_bus, если mem_read=1, вывод данных из system_bus если mem_write=1
+- out mem_data_size - 1, если io_data_size=1
 
 #### связь с портом ввода/вывода
-- out port_read
-- out port_write
-- out x8 port_addr
-- in/out x8 port_data
+- out port_read - 1, если io_read_data=1 и адрес >= 65280
+- out port_write - 1, если io_write_data=1 и адрес >= 65280
+- out x8 port_addr - постоянный вывод первых 8 бит значения регистра адреса
+- in/out x8 port_data - ввод данных и вывод первых 8 бит в system_bus, если port_read=1, вывод первых 8 бит данных из system_bus если port_write=1
 
 ## MEM (память)
 
@@ -42,83 +42,80 @@
 - in clk
 
 #### связь с IO
-- in mem_read
-- in mem_write
-- in x16 mem_addr
-- in/out x16 mem_data
-- in mem_data_size
+- in mem_read - если 1, вывод данных по адресу mem_addr в mem_data
+- in mem_write - если 1, ввод данных по адресу mem_addr из mem_data при переходе clk 0->1
+- in x16 mem_addr - работа описана выше
+- in/out x16 mem_data - работа описана выше
+- in mem_data_size - если 0 - данные 16 бит, если 1 - данные 8 бит
 
 ## REG (регистр)
 
 #### управляющие сигналы
-- in reg_read_from_bus 
-- in reg_write_to_bus 
-- in reg_read_from_alu
+- in reg_read_from_bus - если 1, ввод данных с system_bus при переходе clk 0->1 
+- in reg_write_to_bus - если 1, вывод данных в system_bus
+- in reg_read_from_alu - если 1, ввод данных с alu_result при переходе clk 0->1 
 
 #### базовые сигналы
 - in clk
 - in/out x16 system_bus
 
 #### связь с АЛУ
-- in x16 alu_result
-- out x16 reg_value
+- in x16 alu_result - работа описана выше
+- out x16 reg_value - постоянный вывод данных
 
 ## FLAGS (регистр флагов)
 
 #### управляющие сигналы
-- in flags_read_from_bus 
-- in flags_read_to_bus 
-- in flags_read_from_alu
+- in flags_read_from_bus - если 1, ввод значений с system_bus (бит 0 - zf, бит 1 - sf, бит 2 - cf) при переходе clk 0->1 
+- in flags_read_to_bus - если 1, вывод значений в system_bus (бит 0 - zf, бит 1 - sf, бит 2 - cf)
+- in flags_read_from_alu - если 1, ввод значений с alu_x при переходе clk 0->1 
 
 #### базовые сигналы
 - in clk
 - in/out x16 system_bus
 
 #### связь с АЛУ и УУ
-- in alu_zf
-- in alu_sf
-- in alu_cf
-- out flags_zf
-- out flags_sf
-- out flags_cf
+- in alu_zf - работа описана выше
+- in alu_sf - работа описана выше
+- in alu_cf - работа описана выше
+- out flags_zf - постоянный вывод zf
+- out flags_sf - постоянный вывод sf
+- out flags_cf - постоянный вывод cf
 
 ## ALU (арифметическо-логическое устройство)
 
 #### управляющие сигналы
-- in alu_add
-- in alu_nand
-- in alu_shr
-- in alu_shl
+- in alu_add - если 1, выолнять "reg_value + system_bus + flags_cf" и выводить в alu_result
+- in alu_nand - если 1, выолнять "reg_value nand system_bus" и выводить в alu_result
+- in alu_shr - если 1, выолнять сдвиг system_bus вправо и выводить в alu_result
+- in alu_shl - если 1, выолнять сдвиг system_bus влево и выводить в alu_result
 
 #### базовые сигналы
-- in clk
 - in x16 system_bus
 
 #### связь с REG
-- in x16 reg_value
-- out x16 alu_result
+- in x16 reg_value - работа описана выше
+- out x16 alu_result - работа описана выше
 
 #### связь с FLAGS
-- in flags_zf
-- in flags_sf
-- in flags_cf
-- out alu_zf
-- out alu_sf
-- out alu_cf
+- in flags_cf - работа описана выше
+- out alu_zf - 1, если результат=0
+- out alu_sf - 1, если результат<0 (>32767)
+- out alu_cf - 1, если результат не влез в reg_value
 
 ## IP (регистр адреса инструкции)
 
 #### управляющие сигналы
-- in ip_inc
-- in ip_write
-- in ip_read
+- in ip_inc - если 1, инкрементировать значение при переходе clk 0->1 
+- in ip_write - если 1, записать значение из system_bus при переходе clk 0->1
+- in ip_read - если 1, выводить значение в system_bus
 
 #### базовые сигналы
 - in clk
 - in/out x16 system_bus
 
 #### связь с IR
-- out x16 ip_value
+- out x16 ip_value - постоянный вывод значения
 
 ## IR (регистр инструкции)
 
