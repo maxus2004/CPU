@@ -13,12 +13,11 @@
 ## IO_ADDR_REG (регистр адреса)
 
 #### управляющие сигналы
-- in io_read_addr - если 1, вывод адреса в system_bus
 - in io_write_addr - если 1, ввод адреса с system_bus при переходе clk 0->1
 
 #### базовые сигналы
 - in clk
-- in/out x16 system_bus
+- in x16 system_bus
 
 #### связь с MEM
 - out x16 mem_addr - постоянный вывод значения регистра адреса
@@ -69,6 +68,8 @@
 - in reg_read_from_bus - если 1, ввод данных с system_bus при переходе clk 0->1 
 - in reg_write_to_bus - если 1, вывод данных в system_bus
 - in reg_read_from_alu - если 1, ввод данных с alu_result при переходе clk 0->1 
+- in alu_shr - если 1, выолнить сдвиг вправо
+- in alu_shl - если 1, выолнить сдвиг влево
 
 #### базовые сигналы
 - in clk
@@ -81,13 +82,11 @@
 ## FLAGS_REG (регистр флагов)
 
 #### управляющие сигналы
-- in flags_read_from_bus - если 1, ввод значений с system_bus (бит 0 - zf, бит 1 - sf, бит 2 - cf) при переходе clk 0->1 
-- in flags_read_to_bus - если 1, вывод значений в system_bus (бит 0 - zf, бит 1 - sf, бит 2 - cf)
 - in flags_read_from_alu - если 1, ввод значений с alu_x при переходе clk 0->1 
 
 #### базовые сигналы
 - in clk
-- in/out x16 system_bus
+- in x16 system_bus
 
 #### связь с АЛУ и УУ
 - in alu_zf - работа описана выше
@@ -102,8 +101,6 @@
 #### управляющие сигналы
 - in alu_add - если 1, выолнять "reg_value + system_bus + flags_cf" и выводить в alu_result
 - in alu_nand - если 1, выолнять "reg_value nand system_bus" и выводить в alu_result
-- in alu_shr - если 1, выолнять сдвиг system_bus вправо и выводить в alu_result
-- in alu_shl - если 1, выолнять сдвиг system_bus влево и выводить в alu_result
 
 #### базовые сигналы
 - in x16 system_bus
