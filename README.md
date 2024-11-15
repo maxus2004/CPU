@@ -176,8 +176,12 @@
 - out flags_read_from_bus 
 - out flags_read_to_bus 
 - out flags_read_from_alu
-- out alu_add
-- out alu_nand
+- out alu_carry
+- out alu_mode
+- out alu_op0
+- out alu_op1
+- out alu_op2
+- out alu_op3
 - out alu_shr
 - out alu_shl
 - out ip_inc
