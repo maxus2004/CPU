@@ -65,11 +65,11 @@
 ## ACC_REG (регистр аккумулятор)
 
 #### управляющие сигналы
-- in reg_read_from_bus - если 1, ввод данных с system_bus при переходе clk 0->1 
 - in reg_write_to_bus - если 1, вывод данных в system_bus
-- in reg_read_from_alu - если 1, ввод данных с alu_result при переходе clk 0->1 
-- in reg_shr - если 1, выолнить сдвиг вправо
-- in reg_shl - если 1, выолнить сдвиг влево
+- in reg_read_from_alu - если 1 и reg_shl=reg_shr=1, ввод данных с alu_result при переходе clk 0->1,
+                         если 0 и reg_shl=reg_shr=1, ввод данных с system_bus при переходе clk 0->1,
+- in reg_shr - если 1 и reg_shl=0, выолнить сдвиг вправо
+- in reg_shl - если 1 и reg_shr=0, выолнить сдвиг влево
 
 #### базовые сигналы
 - in clk
