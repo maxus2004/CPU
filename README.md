@@ -98,8 +98,9 @@
 ## ALU (арифметическо-логическое устройство)
 
 #### управляющие сигналы
-- in alu_add - если 1, выолнять "reg_value + system_bus + flags_cf" и выводить в alu_result
-- in alu_nand - если 1, выолнять "reg_value nand system_bus" и выводить в alu_result
+- in alu_carry - бит переноса
+- in alu_mode  - режим АЛУ (0 - алгебра, 1 - логика)
+- in x4 alu_op - выбор операции
 
 #### базовые сигналы
 - in x16 system_bus
@@ -109,7 +110,6 @@
 - out x16 alu_result - работа описана выше
 
 #### связь с FLAGS_REG
-- in flags_cf - работа описана выше
 - out alu_zf - 1, если результат=0
 - out alu_sf - 1, если результат<0 (>32767)
 - out alu_cf - 1, если результат не влез в reg_value
