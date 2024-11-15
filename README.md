@@ -68,8 +68,8 @@
 - in reg_read_from_bus - если 1, ввод данных с system_bus при переходе clk 0->1 
 - in reg_write_to_bus - если 1, вывод данных в system_bus
 - in reg_read_from_alu - если 1, ввод данных с alu_result при переходе clk 0->1 
-- in alu_shr - если 1, выолнить сдвиг вправо
-- in alu_shl - если 1, выолнить сдвиг влево
+- in reg_shr - если 1, выолнить сдвиг вправо
+- in reg_shl - если 1, выолнить сдвиг влево
 
 #### базовые сигналы
 - in clk
@@ -108,6 +108,8 @@
 #### связь с ACC_REG
 - in x16 reg_value - работа описана выше
 - out x16 alu_result - работа описана выше
+- out reg_shr - 1, если alu_op = "shr"
+- out reg_shl - 1, если alu_op = "shl"
 
 #### связь с FLAGS_REG
 - out alu_zf - 1, если результат=0
@@ -182,8 +184,6 @@
 - out alu_op1
 - out alu_op2
 - out alu_op3
-- out alu_shr
-- out alu_shl
 - out ip_inc
 - out ip_write
 - out ip_read
