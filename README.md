@@ -167,17 +167,14 @@
 - in clk - вывод управляющих сигналов при переходе clk 1->0
 
 #### управляющие сигналы
-- out io_read_addr - бит 0 значения в ROM
-- out io_write_addr - бит 1 значения в ROM
-- out io_read_data - бит 2 значения в ROM
+- out io_write_addr
+- out io_read_data
 - out io_write_data
 - out io_data_size
 - out reg_write_to_bus 
 - out reg_read_from_alu
 - out reg_shr
 - out reg_shl
-- out flags_read_from_bus 
-- out flags_read_to_bus 
 - out flags_read_from_alu
 - out alu_carry
 - out alu_mode
