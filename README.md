@@ -108,8 +108,6 @@
 #### связь с ACC_REG
 - in x16 reg_value - работа описана выше
 - out x16 alu_result - работа описана выше
-- out reg_shr - 1, если alu_op = "shr"
-- out reg_shl - 1, если alu_op = "shl"
 
 #### связь с FLAGS_REG
 - out alu_zf - 1, если результат=0
