@@ -82,7 +82,7 @@
 ## FLAGS_REG (регистр флагов)
 
 #### управляющие сигналы
-- in flags_read_from_alu - если 1, ввод значений с alu_x при переходе clk 0->1 
+- in flags_store - если 1, ввод значений с alu_x при переходе clk 0->1 
 
 #### базовые сигналы
 - in clk
@@ -173,7 +173,7 @@
 - out reg_read_from_alu
 - out reg_shr
 - out reg_shl
-- out flags_read_from_alu
+- out flags_store
 - out alu_carry
 - out alu_mode
 - out alu_op0
