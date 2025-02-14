@@ -10,10 +10,10 @@
 
 # Модули процессора
 
-## IO_ADDR_REG (регистр адреса)
+## MEM_ADDR_REG (регистр адреса памяти)
 
 #### управляющие сигналы
-- in io_write_addr - если 1, ввод адреса с system_bus при переходе clk 0->1
+- in mem_addr_write - если 1, ввод адреса с system_bus при переходе clk 0->1
 
 #### базовые сигналы
 - in clk
@@ -22,51 +22,52 @@
 #### связь с MEM
 - out x16 mem_addr - постоянный вывод значения регистра адреса
 
-#### связь с портом ввода/вывода
-- out x8 port_addr - постоянный вывод первых 8 бит значения регистра адреса
-
-## IO (контроллер ввода/вывода)
+## MEM (контроллер памяти)
 
 #### управляющие сигналы
 
-- in io_read_data - если 1, вывод данных в system_bus
-- in io_write_data - если 1, ввод данных с system_bus при переходе clk 0->1
-- in io_data_size - выбор размера данных (0 - 16 бит, 1 - 8 бит)
+- in mem_read - если 1, вывод данных в system_bus
+- in mem_write - если 1, ввод данных с system_bus при переходе clk 0->1
+- in 8_bit - выбор размера данных (0 - 16 бит, 1 - 8 бит)
 
 #### базовые сигналы
 - in clk
 - in/out x16 system_bus
 
-#### связь с MEM
-- out mem_read - 1, если io_read_data=1 и адрес < 65280
-- out mem_write - 1, если io_write_data=1 и адрес < 65280
-- in/out x16 mem_data - ввод данных и вывод в system_bus, если mem_read=1, вывод данных из system_bus если mem_write=1
-- out mem_data_size - 1, если io_data_size=1
+#### связь с MEM_ADDR_REG
+- in x16 mem_addr - адрес ячейки памяти
 
-#### связь с портом ввода/вывода
-- out port_read - 1, если io_read_data=1 и адрес >= 65280
-- out port_write - 1, если io_write_data=1 и адрес >= 65280
-- in/out x8 port_data - ввод данных и вывод первых 8 бит в system_bus, если port_read=1, вывод первых 8 бит данных из system_bus если port_write=1
+## IO_ADDR_REG (регистр адреса порта ввода-вывода)
 
-## MEM (память)
+#### управляющие сигналы
+- in io_addr_write - если 1, ввод адреса с system_bus при переходе clk 0->1
 
 #### базовые сигналы
 - in clk
+- in x8 system_bus
 
-#### связь с IO
-- in mem_read - если 1, вывод данных по адресу mem_addr в mem_data
-- in mem_write - если 1, ввод данных по адресу mem_addr из mem_data при переходе clk 0->1
-- in/out x16 mem_data - работа описана выше
-- in mem_data_size - если 0 - данные 16 бит, если 1 - данные 8 бит
+#### связь с IO_PORT
+- out x8 io_addr - постоянный вывод первых 8 бит значения регистра адреса
+
+## IO_PORT (порт ввода-вывода)
+
+#### управляющие сигналы
+- in io_read - если 1, вывод данных в system_bus
+- in io_write - если 1, ввод данных с system_bus при переходе clk 0->1
+- in 8_bit - выбор размера данных (0 - 16 бит, 1 - 8 бит)
+
+#### базовые сигналы
+- in clk
+- in/out x16 system_bus
 
 #### связь с IO_ADDR_REG
-- in x16 mem_addr - работа описана выше
+- in x8 io_addr - работа описана выше
 
 ## ACC_REG (регистр аккумулятор)
 
 #### управляющие сигналы
-- in reg_write_to_bus - если 1, вывод данных в system_bus
-- in reg_read_from_alu - если 1 и reg_shl=reg_shr=1, ввод данных с alu_result при переходе clk 0->1,
+- in reg_read - если 1, вывод данных в system_bus
+- in reg_write - если 1 и reg_shl=reg_shr=1, ввод данных с alu_result при переходе clk 0->1,
                          если 0 и reg_shl=reg_shr=1, ввод данных с system_bus при переходе clk 0->1,
 - in reg_shr - если 1 и reg_shl=0, выолнить сдвиг вправо
 - in reg_shl - если 1 и reg_shr=0, выолнить сдвиг влево
@@ -165,12 +166,15 @@
 - in clk - вывод управляющих сигналов при переходе clk 1->0
 
 #### управляющие сигналы
-- out io_write_addr
-- out io_read_data
-- out io_write_data
-- out io_data_size
-- out reg_write_to_bus 
-- out reg_read_from_alu
+- out mem_addr_write
+- out mem_read
+- out mem_write
+- out io_addr_write
+- out io_read
+- out io_write
+- out 8_bit
+- out reg_read 
+- out reg_write
 - out reg_shr
 - out reg_shl
 - out flags_store
