@@ -166,30 +166,56 @@
 - in clk - вывод управляющих сигналов при переходе clk 1->0
 
 #### управляющие сигналы
-- out mem_addr_write
-- out mem_read
-- out mem_write
-- out io_addr_write
-- out io_read
-- out io_write
-- out 8_bit
-- out reg_read 
-- out reg_write
-- out reg_shr
-- out reg_shl
-- out flags_store
-- out alu_carry
-- out alu_mode
-- out alu_op0
-- out alu_op1
-- out alu_op2
-- out alu_op3
-- out ip_inc
-- out ip_write
-- out ip_read
-- out ir_read
-- out count_reset
-- out clock_stop
+- out !MEM_BASE_WE
+- out  MEM_OFFSET_WE
+- out !MEM_OFFSET_CLR
+- out !MEM_WE
+- out !MEM_OE
+  
+- out  ALU_CIN
+- out  ALU_MODE
+- out  ALU_OP0
+- out  ALU_OP1
+- out  ALU_OP2
+- out  ALU_OP3
+  
+- out  FLAGS_WE
+- out !FLAGS_OE
+- out  FLAGS_ALU
+
+- out !ACC_OE 
+- out  ACC_SHR
+- out  ACC_SHL
+- out  ACC_ALU
+
+- out !B_WE
+- out !B_OE
+- out !C_WE
+- out !C_OE
+- out !D_WE
+- out !D_OE
+- out !E_WE
+- out !E_OE
+- out !F_WE
+- out !F_OE
+
+- out !BP_WE
+- out !BP_OE
+
+- out !SP_WE
+- out !SP_OE
+- out !SP_CNT
+- out  SP_DOWN
+
+- out !IP_WE
+- out !IP_OE
+- out  IP_INC
+  
+- out !IR_WE
+  
+- out CNT_CLR
+  
+- out CLK_STOP
 
 ## CLOCK (генератор тактового сигнала)
 

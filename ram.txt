@@ -1,0 +1,10 @@
+ROM: 0000 0000 0000 0000 - 0000 0111 1111 1111    2048 words
+ IO: 0000 1000 0000 0000 - 0000 1000 1111 1111    256 words
+RAM: 1000 0000 0000 0000 - 1111 1111 1111 1111    32768 words
+
+!ROM_EN = !bit11 nand !bit15
+!IO_EN  = !(bit11 and !bit15 and (!MEM_WE nand !MEM_OE))
+!RAM_EN = !bit15
+
+IO_WE = !IO_EN nor !MEM_WE
+IO_OE = !IO_EN nor !MEM_OE
