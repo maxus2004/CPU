@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/max/code/CPU_emulator/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

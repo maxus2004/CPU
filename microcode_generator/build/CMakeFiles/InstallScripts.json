@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/max/code/CPU/microcode_generator/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

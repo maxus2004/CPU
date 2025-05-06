@@ -1,0 +1,122 @@
+[
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/main.c.o -c /home/max/code/CPU_emulator/main.c",
+  "file": "/home/max/code/CPU_emulator/main.c",
+  "output": "CMakeFiles/emulator.dir/main.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/acc_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/acc_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/acc_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/acc_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/alu.c.o -c /home/max/code/CPU_emulator/cpu_modules/alu.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/alu.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/alu.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/clock.c.o -c /home/max/code/CPU_emulator/cpu_modules/clock.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/clock.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/clock.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/count.c.o -c /home/max/code/CPU_emulator/cpu_modules/count.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/count.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/count.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/flags_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/flags_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/flags_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/flags_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/inst_addr_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/inst_addr_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/inst_addr_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/inst_addr_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/inst_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/inst_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/inst_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/inst_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/io_addr_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/io_addr_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/io_addr_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/io_addr_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/io_port.c.o -c /home/max/code/CPU_emulator/cpu_modules/io_port.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/io_port.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/io_port.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/mem.c.o -c /home/max/code/CPU_emulator/cpu_modules/mem.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/mem.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/mem.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/mem_addr_reg.c.o -c /home/max/code/CPU_emulator/cpu_modules/mem_addr_reg.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/mem_addr_reg.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/mem_addr_reg.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/microcode_rom.c.o -c /home/max/code/CPU_emulator/cpu_modules/microcode_rom.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/microcode_rom.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/microcode_rom.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/cpu_modules/wires.c.o -c /home/max/code/CPU_emulator/cpu_modules/wires.c",
+  "file": "/home/max/code/CPU_emulator/cpu_modules/wires.c",
+  "output": "CMakeFiles/emulator.dir/cpu_modules/wires.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/gpio.c.o -c /home/max/code/CPU_emulator/external_modules/gpio.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/gpio.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/gpio.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/i2c.c.o -c /home/max/code/CPU_emulator/external_modules/i2c.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/i2c.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/i2c.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/ps2.c.o -c /home/max/code/CPU_emulator/external_modules/ps2.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/ps2.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/ps2.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/rs232_1.c.o -c /home/max/code/CPU_emulator/external_modules/rs232_1.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/rs232_1.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/rs232_1.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/rs232_2.c.o -c /home/max/code/CPU_emulator/external_modules/rs232_2.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/rs232_2.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/rs232_2.c.o"
+},
+{
+  "directory": "/home/max/code/CPU_emulator/build",
+  "command": "/usr/bin/cc  -I/home/max/code/CPU_emulator/cpu_headers -Wno-error=implicit-function-declaration -g -o CMakeFiles/emulator.dir/external_modules/spi.c.o -c /home/max/code/CPU_emulator/external_modules/spi.c",
+  "file": "/home/max/code/CPU_emulator/external_modules/spi.c",
+  "output": "CMakeFiles/emulator.dir/external_modules/spi.c.o"
+}
+]
