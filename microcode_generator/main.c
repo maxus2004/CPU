@@ -150,7 +150,7 @@ void generate_one_argument_ops(){
     generate_one_argument_op(0b01100<<3, NONE, NONE, jmp_uops, 1, 0);
     // JZ / JE
     uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01101<<3, ZF, ZF, jz0_uops, 1, 0);
+    generate_one_argument_op(0b01101<<3, ZF, NONE, jz0_uops, 1, 0);
     uint32_t jz1_uops[] = {IP_WE};
     generate_one_argument_op(0b01101<<3, ZF, ZF, jz1_uops, 1, 0);
 
