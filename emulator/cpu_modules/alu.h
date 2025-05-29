@@ -1,3 +1,3 @@
 #pragma once
 
-void alu_tick();
+void alu_between_ticks();

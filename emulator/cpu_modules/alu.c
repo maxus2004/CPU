@@ -1,14 +1,13 @@
 #include "wires.h"
-#include "acc_reg.h"
 
-void alu_tick(){
+void alu_between_ticks(){
     int32_t f;
-    uint16_t a = acc_reg_value;
-    uint16_t b = system_bus;
-    uint16_t c = alu_carry;
-    uint8_t alu_op = (alu_op0) | (alu_op1<<1) | (alu_op2<<2) | (alu_op3<3);
+    uint16_t a = wires.a_val;
+    uint16_t b = wires.system_bus;
+    bool c = wires.alu_carry;
+    uint8_t alu_op = (wires.alu_op0) | (wires.alu_op1<<1) | (wires.alu_op2<<2) | (wires.alu_op3<3);
 
-    if(alu_mode){
+    if(wires.alu_mode){
         switch (alu_op){
             case  0: f = ~a;       break;
             case  1: f = ~(a & b); break;
@@ -48,8 +47,8 @@ void alu_tick(){
         }
     }
 
-    alu_result = (uint16_t)f;
-    alu_zf = alu_result == 0;
-    alu_sf = (int16_t)alu_result < 0;
-    alu_cf = alu_result != f;
+    next_wires.alu_result = (uint16_t)f;
+    next_wires.alu_zf = next_wires.alu_result == 0;
+    next_wires.alu_sf = (int16_t)next_wires.alu_result < 0;
+    next_wires.alu_cf = next_wires.alu_result != f;
 }

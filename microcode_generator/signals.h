@@ -1,54 +1,76 @@
-#define CONTINUE    1<<0    //set microoperation counter to 0, execute next command
-#define CLK_STOP    1<<1    //stop system clock
+//EEPROM 0
+#define A_ALU (1<<0)
+#define FLAGS_ALU (1<<1)
+#define IP_CNT (1<<2)
+#define SP_CNT (1<<3)
+#define SP_DOWN (1<<4)
+#define C_CNT (1<<5)
+#define C_DOWN (1<<6)
+//EEPROM 1
+#define CIN (1<<8)
+#define ALU_M (1<<9)
+#define ALU_S0 (1<<10)
+#define ALU_S1 (1<<11)
+#define ALU_S2 (1<<12)
+#define ALU_S3 (1<<13)
+#define A_SHR (1<<14)
+#define A_SHL (1<<15)
+//EEPROM 2
+#define OFFSET_CLR (1<<16)
+#define STOP (1<<17)
+#define CNT_CLR (1<<18)
+#define WS_IR4 (1<<19)
+#define WE (1<<20)
+#define OS_IR4 (1<<21)
+#define OS_IR0 (1<<22)
+#define OE (1<<23)
+//EEPROM 3
+#define OS0 (1<<24)
+#define OS1 (1<<25)
+#define OS2 (1<<26)
+#define OS3 (1<<27)
+#define WS0 (1<<28)
+#define WS1 (1<<29)
+#define WS2 (1<<30)
+#define WS3 (1<<31)
 
-#define ALU_CIN     1<<2    //clear carry_in for ALU and set carry_in for A_SHR/A_SHL 
-#define ALU_MODE    1<<3    //0 - MATH, 1 - LOGIC
-#define ALU_OP0     1<<4    //
-#define ALU_OP1     1<<5    //bits for operation selection
-#define ALU_OP2     1<<6    //see datasheet for details: https://www.ti.com/lit/ds/symlink/sn54s181.pdf
-#define ALU_OP3     1<<7    //
+//COMBINATIONS
+#define A_OE (OE)
+#define B_OE (OE | OS0)
+#define C_OE (OE | OS1)
+#define D_OE (OE | OS1 | OS0)
+#define E_OE (OE | OS2)
+#define F_OE (OE | OS2 | OS0)
+#define G_OE (OE | OS2 | OS1)
+#define SP_OE (OE | OS2 | OS1 | OS0)
+#define BP_OE (OE | OS3)
+#define IP_OE (OE | OS3 | OS0)
+#define FLAGS_OE (OE | OS3 | OS1)
+#define MEM_OE (OE | OS3 | OS2 | OS0)
 
-#define A_OE      1<<16   //output A value to BUS
-#define A_SHR     1<<8    //shift A value right, if both SHR and AHL then write input value to A
-#define A_SHL     1<<9    //shift A value left, if both SHR and AHL then write input value to A
-#define A_ALU     1<<10   //0 - input from BUS, 1 - input from ALU
+#define A_WE (WE)
+#define B_WE (WE | WS0)
+#define C_WE (WE | WS1)
+#define D_WE (WE | WS1 | WS0)
+#define E_WE (WE | WS2)
+#define F_WE (WE | WS2 | WS0)
+#define G_WE (WE | WS2 | WS1)
+#define SP_WE (WE | WS2 | WS1 | WS0)
+#define BP_WE (WE | WS3)
+#define IP_WE (WE | WS3 | WS0)
+#define FLAGS_WE (WE | WS3 | WS1)
+#define BASE_WE (WE | WS3 | WS1 | WS0)
+#define OFFSET_WE (WE | WS3 | WS2)
+#define MEM_WE (WE | WS3 | WS2 | WS0)
+#define IR_WE (WE | WS3 | WS2 | WS1)
 
-#define FLAGS_WE    11<<20  //write input value to FLAGS
-#define FLAGS_OE    11<<16  //output FLAGS value to BUS
-#define FLAGS_ALU   1<<11   //0 - input from BUS, 1 - input from ALU
+#define OE_IR0 (OE | OS_IR0)
+#define OE_IR4 (OE | OS_IR4)
+#define WE_IR4 (WE | WS_IR4)
 
-#define B_WE        2<<20   //write BUS value to B
-#define B_OE        2<<16   //output B value to BUS
-#define C_WE        3<<20   //write BUS value to C
-#define C_OE        3<<16   //output C value to BUS
-#define D_WE        4<<20   //write BUS value to D
-#define D_OE        4<<16   //output D value to BUS
-#define E_WE        5<<20   //write BUS value to E
-#define E_OE        5<<16   //output E value to BUS
-#define F_WE        6<<20   //write BUS value to F
-#define F_OE        6<<16   //output E value to BUS
-#define G_WE        7<<20   //write BUS value to G
-#define G_OE        7<<16   //output G value to BUS
-#define H_WE        8<<20   //write BUS value to H
-#define H_OE        8<<16   //output H value to BUS
 
-#define BP_WE       9<<20   //write BUS value to BP
-#define BP_OE       9<<16   //output BP value to BUS
-
-#define SP_WE       10<<20  //write BUS value to SP
-#define SP_OE       10<<16  //output SP value to BUS
-#define SP_CNT      1<<12   //increment/decrement SP        !!!!INVERTED, need to add inverted to schematic!!!!
-#define SP_DOWN     1<<13   //0 - increment on CNT, 1 - decrement on CNT
-
-#define IP_WE       12<<20  //write BUS value to IP
-#define IP_OE       12<<16  //output IP value to BUS
-#define IP_INC      1<<14   //increment IP
-  
-#define IR_WE       13<<20  //write BUS value to IR
-#define IR_BYTE_OE  13<<16  //output extra byte to BUS
-
-#define BASE_WE     1<<20   //write BUS value to BASE
-#define OFFSET_WE   15<<20  //write BUS value to OFFSET
-#define OFFSET_CLR  1<<15   //set OFFSET to 0               !!!!INVERTED, need to add inverted to schematic!!!!
-#define MEM_WE      14<<20  //write BUS value to memory at BASE+OFFSET address
-#define MEM_OE      14<<16  //output value from memory at BASE+OFFSET address to BUS
+//FLAGS
+#define NONE 0
+#define CF (1<<0)
+#define ZF (1<<1)
+#define SF (1<<2)

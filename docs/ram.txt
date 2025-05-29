@@ -8,3 +8,6 @@ RAM: 1000 0000 0000 0000 - 1111 1111 1111 1111    32768 words
 
 IO_WE = !IO_EN nor !MEM_WE
 IO_OE = !IO_EN nor !MEM_OE
+
+
+!SHORT_WE = !MEM_WE or !clk or delayed_clk

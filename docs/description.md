@@ -152,10 +152,10 @@
 ## MICROCODE_ROM (память микрокода / комбинационная схема управления)
 
 #### связь с INST_REG 
-- in x9 ir_value - биты 0-8 адреса в ROM
+- in x8 ir_value - биты 0-8 адреса в ROM
 
 #### связь с COUNT
-- in x3 count_value - биты 9-11 адреса в ROM
+- in x4 count_value - биты 9-11 адреса в ROM
 
 #### связь с FLAGS_REG
 - in flags_zf - бит 12 адреса в ROM

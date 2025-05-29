@@ -2,6 +2,7 @@
     "files.associations": {
         "acc_reg.h": "c",
         "microcode_rom.h": "c",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "common.h": "c"
     }
 }

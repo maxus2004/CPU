@@ -1,5 +1,6 @@
 #pragma once
+#include <stdint.h>
 
 extern uint32_t microcode_rom[65536];
 
-void microcode_rom_tick();
+void control_between_ticks();

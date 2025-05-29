@@ -1,40 +1,57 @@
-#include <stdbool.h>
-#include <stdint.h>
+#pragma once
+#include "common.h"
 
-extern bool mem_addr_write;
-extern bool mem_transfer;
-extern bool io_addr_write;
-extern bool io_transfer;
-extern bool io_mem_dir;
-extern bool eight_bit;
-extern bool reg_read;
-extern bool reg_write;
-extern bool reg_shr;
-extern bool reg_shl;
-extern bool flags_store;
-extern bool alu_carry;
-extern bool alu_mode;
-extern bool alu_op0;
-extern bool alu_op1;
-extern bool alu_op2;
-extern bool alu_op3;
-extern bool ip_inc;
-extern bool ip_write;
-extern bool ip_read;
-extern bool ir_read;
-extern bool count_reset;
-extern bool clock_stop, prev_clock_stop;
-extern bool clock_start, prev_clock_start;
-extern bool clock_step, prev_clock_step;
+typedef struct {
+    bool a_oe;
+    bool a_shl;
+    bool a_shr;
+    bool a_alu;
+    uint16_t a_val;
 
-extern bool alu_zf, alu_sf, alu_cf;
-extern bool flags_zf, flags_sf, flags_cf;
-extern uint16_t alu_result;
-extern uint16_t reg_value;
-extern uint8_t count_value;
-extern uint8_t ir_value;
-extern uint8_t io_addr;
-extern uint16_t mem_addr;
+    bool alu_carry;
+    bool alu_op0;
+    bool alu_op1;
+    bool alu_op2;
+    bool alu_op3;
+    bool alu_mode;
+    bool alu_zf;
+    bool alu_sf;
+    bool alu_cf;
+    uint16_t alu_result;
 
-extern uint16_t system_bus;
-extern bool clk, prev_clk;
+    bool flags_we;
+    bool flags_zf;
+    bool flags_sf;
+    bool flags_cf;
+
+    bool ip_val;
+    bool ip_we;
+    bool ip_oe;
+    bool ip_inc;
+
+    bool ir_we;
+    uint16_t ir_val;
+
+    bool base_we;
+    uint16_t base_val;
+
+    bool offset_we;
+    bool offset_clr;
+    uint16_t offset_val;
+
+    bool mem_we;
+    bool mem_oe;
+    uint16_t io_data;
+    uint16_t io_addr;
+    bool io_we;
+    bool io_oe;
+
+    bool count_reset;
+    uint8_t count_value;
+
+    uint16_t system_bus;
+    bool rst;
+}wires_t;
+
+extern wires_t wires;
+extern wires_t next_wires;
