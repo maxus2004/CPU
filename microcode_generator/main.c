@@ -85,10 +85,8 @@ void generate_no_argument_instructions(){
     //STOP
     uint32_t stop_uops[] = {STOP};
     generate_no_argument_instruction(0b00000000, NONE, NONE, stop_uops, 1);
-
     //RETURN
-    //TODO
-
+    //TODO: return instruction
     //SHR A
     uint32_t shr_a_uops[] = {A_SHR};
     generate_no_argument_instruction(0b00000001, NONE, NONE, shr_a_uops, 1);
@@ -156,11 +154,11 @@ void generate_one_argument_instructions(){
     uint32_t jz1_uops[] = {IP_WE};
     generate_one_argument_instruction(0b01101<<3, ZF, ZF, jz1_uops, 1, 0);
 
-    //TODO
+    //TODO: next instructions
 }
 
 void generate_mov(){
-    //TODO
+    //TODO: mov instruction
 }
 
 int main(){
@@ -168,4 +166,6 @@ int main(){
     generate_no_argument_instructions();
     generate_one_argument_instructions();
     generate_mov();
+
+    //TODO microcode output to files
 }
