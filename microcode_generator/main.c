@@ -167,5 +167,5 @@ int main(){
     generate_one_argument_instructions();
     generate_mov();
 
-    //TODO microcode output to files
+    //TODO: microcode output to files
 }
