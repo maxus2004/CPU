@@ -112,7 +112,7 @@ void generate_no_argument_instructions(){
 void generate_one_argument_instructions(){
     // AND
     uint32_t and_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S1 | ALU_S0};
-    generate_one_argument_instruction(0b00001000, NONE, NONE, and_uops, 1, 0);
+    generate_one_argument_instruction(0b00001<<3, NONE, NONE, and_uops, 1, 0);
     // OR
     uint32_t or_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S2 | ALU_S1};
     generate_one_argument_instruction(0b00010<<3, NONE, NONE, or_uops, 1, 0);
