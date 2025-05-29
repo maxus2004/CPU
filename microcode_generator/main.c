@@ -6,7 +6,7 @@ uint32_t ucode[65536] = {0};
 
 void add_uop(uint8_t opcode, uint8_t cnt, uint8_t flags_mask, uint8_t flags, uint32_t uop){
     for(uint8_t f = 0b000; f<=0b111; f++){
-        if((flags&flags_mask) != (cnt&flags_mask)) continue;
+        if((flags&flags_mask) != (f&flags_mask)) continue;
         ucode[((uint16_t)opcode) | (((uint16_t)cnt)<<8) | (((uint16_t)f)<<12)] = uop;
     }
 }
