@@ -148,11 +148,46 @@ void generate_one_argument_ops(){
     // JMP
     uint32_t jmp_uops[] = {IP_WE};
     generate_one_argument_op(0b01100<<3, NONE, NONE, jmp_uops, 1, 0);
-    // JZ / JE
+    // JZ/JE
     uint32_t jz0_uops[] = {NONE};
     generate_one_argument_op(0b01101<<3, ZF, NONE, jz0_uops, 1, 0);
     uint32_t jz1_uops[] = {IP_WE};
     generate_one_argument_op(0b01101<<3, ZF, ZF, jz1_uops, 1, 0);
+    // JNZ/JNE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01101<<3, ZF, ZF, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01101<<3, ZF, NONE, jz1_uops, 1, 0);
+    // JC/JB/JNAE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, CF, NONE, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, CF, CF, jz1_uops, 1, 0);
+    // JNC/JNB/JAE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, CF, CF, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, CF, NONE, jz1_uops, 1, 0);
+    // JS/JL/JNGE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF, NONE, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF, SF, jz1_uops, 1, 0);
+    // JNS/JNL/JGE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF, SF, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF, NONE, jz1_uops, 1, 0);
+    // JG/JNLE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, NONE, NONE, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, jz1_uops, 1, 0);
+    // JNG/JLE
+    uint32_t jz0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, jz0_uops, 1, 0);
+    uint32_t jz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, NONE, NONE, jz1_uops, 1, 0);
 
     //TODO: next instructions
 }
