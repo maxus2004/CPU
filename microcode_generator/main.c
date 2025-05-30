@@ -188,8 +188,21 @@ void generate_one_argument_ops(){
     generate_one_argument_op(0b01110<<3, SF|ZF, NONE, jz0_uops, 1, 0);
     uint32_t jz1_uops[] = {IP_WE};
     generate_one_argument_op(0b01110<<3, NONE, NONE, jz1_uops, 1, 0);
-
-    //TODO: next instructions
+    // CALL
+    //TODO: CALL instruction
+    // PUSH
+    uint32_t push_ops[] = {
+        SP_CNT | SP_DOWN,
+        SP_OE | BASE_WE | OFFSET_CLR,
+        MEM_WE | OE_IR0
+    };
+    generate_no_argument_op(0b11110001, NONE, NONE, push_ops, 3);
+    // POP
+    uint32_t pop_ops[] = {
+        SP_OE | BASE_WE | OFFSET_CLR,
+        MEM_OE | WE_IR4 | SP_CNT
+    };
+    generate_no_argument_op(0b11110001, NONE, NONE, pop_ops, 2);
 }
 
 void generate_mov(){
