@@ -90,7 +90,7 @@ void generate_no_argument_ops(){
         MEM_OE | IP_WE | SP_CNT         //  ┘ POP IP
 
     };
-    generate_no_argument_op(0b00000001, NONE, NONE, ret_uops, 1);
+    generate_no_argument_op(0b00000001, NONE, NONE, ret_uops, 5);
     //SHR A
     uint32_t shr_a_uops[] = {A_SHR};
     generate_no_argument_op(0b00000010, NONE, NONE, shr_a_uops, 1);
