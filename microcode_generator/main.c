@@ -27,57 +27,53 @@ void generate_no_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags, 
     }
 }
 
-void generate_one_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags, uint32_t *uops, int uops_count, int uop_with_data){
+void generate_one_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags, uint32_t *before_read_uops, int before_read_uops_count, uint32_t *after_read_uops, int after_read_uops_count){
+    //before argument read
+    for(int src = 0b000; src <= 0b101; src++){
+        for(int i = 0; i < before_read_uops_count; i++){
+            add_uop(
+                opcode|src, 2+i, flags_mask, flags, 
+                before_read_uops[i]
+            );
+        }
+    }
+
+    //argument read
     // lit
-    add_uop(opcode|0b000, 2, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b000, 3+i, flags_mask, flags, 
-            (uop_with_data==i)?MEM_OE:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
-    }
+    add_uop(opcode|0b000, 2+before_read_uops_count, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
     // reg
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b001, 2+i, flags_mask, flags,
-            (uop_with_data==i)?OE_IR0:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
-    }
+    // chilling 😎👌
     // [lit]
-    add_uop(opcode|0b010, 2, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
-    add_uop(opcode|0b010, 3, flags_mask, flags, MEM_OE | BASE_WE | OFFSET_CLR);
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b010, 4+i, flags_mask, flags, 
-            (uop_with_data==i)?MEM_OE:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
-    }
+    add_uop(opcode|0b010, 2+before_read_uops_count, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
+    add_uop(opcode|0b010, 3+before_read_uops_count, flags_mask, flags, MEM_OE | BASE_WE | OFFSET_CLR);
     // [reg]
-    add_uop(opcode|0b011, 2, flags_mask, flags, OE_IR0 | BASE_WE | OFFSET_CLR);
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b011, 3+i, flags_mask, flags, 
-            (uop_with_data==i)?MEM_OE:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
-    }
+    add_uop(opcode|0b011, 2+before_read_uops_count, flags_mask, flags, OE_IR0 | BASE_WE | OFFSET_CLR);
     // [r+l]
-    add_uop(opcode|0b100, 2, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
-    add_uop(opcode|0b100, 3, flags_mask, flags, MEM_OE | OFFSET_WE);
-    add_uop(opcode|0b100, 4, flags_mask, flags, OE_IR0 | BASE_WE);
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b100, 5+i, flags_mask, flags, 
-            (uop_with_data==i)?MEM_OE:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
-    }
+    add_uop(opcode|0b100, 2+before_read_uops_count, flags_mask, flags, IP_OE | BASE_WE | OFFSET_CLR | IP_CNT);
+    add_uop(opcode|0b100, 3+before_read_uops_count, flags_mask, flags, MEM_OE | OFFSET_WE);
+    add_uop(opcode|0b100, 4+before_read_uops_count, flags_mask, flags, OE_IR0 | BASE_WE);
     // [r+r]
-    add_uop(opcode|0b101, 2, flags_mask, flags, OE_IR4 | OFFSET_WE);
-    add_uop(opcode|0b101, 3, flags_mask, flags, OE_IR0 | BASE_WE);
-    for(int i = 0; i < uops_count; i++){
-        add_uop(
-            opcode|0b101, 4+i, flags_mask, flags, 
-            (uop_with_data==i)?MEM_OE:NONE | uops[i] | (i==uops_count-1)?CNT_CLR:NONE
-        );
+    add_uop(opcode|0b101, 2+before_read_uops_count, flags_mask, flags, OE_IR4 | OFFSET_WE);
+    add_uop(opcode|0b101, 3+before_read_uops_count, flags_mask, flags, OE_IR0 | BASE_WE);
+
+    //after argument read
+    int after_read_uop_start[6] = {
+        2+before_read_uops_count+1,
+        2+before_read_uops_count+0,
+        2+before_read_uops_count+2,
+        2+before_read_uops_count+1,
+        2+before_read_uops_count+3,
+        2+before_read_uops_count+2,
+    };
+    uint32_t data_read_signal[6] = {MEM_OE, OE_IR0, MEM_OE, MEM_OE, MEM_OE, MEM_OE};
+        
+    for(int src = 0b000; src <= 0b101; src++){
+        for(int i = 0; i < after_read_uops_count; i++){
+            add_uop(
+                opcode|src, after_read_uop_start[src]+i, flags_mask, flags, 
+                (i==0)?data_read_signal:NONE | after_read_uops[i] | (i==after_read_uops_count-1)?CNT_CLR:NONE
+            );
+        }
     }
 }
 
@@ -86,10 +82,18 @@ void generate_no_argument_ops(){
     uint32_t stop_uops[] = {STOP};
     generate_no_argument_op(0b00000000, NONE, NONE, stop_uops, 1);
     //RETURN
-    //TODO: return instruction
+    uint32_t ret_uops[] = {
+        SP_WE | BP_WE,                  //  ] MOV SP, BP
+        SP_OE | BASE_WE | OFFSET_CLR,   //  ┐
+        MEM_OE | BP_WE | SP_CNT,        //  ┘ POP BP
+        SP_OE | BASE_WE | OFFSET_CLR,   //  ┐
+        MEM_OE | IP_WE | SP_CNT         //  ┘ POP IP
+
+    };
+    generate_no_argument_op(0b00000001, NONE, NONE, ret_uops, 1);
     //SHR A
     uint32_t shr_a_uops[] = {A_SHR};
-    generate_no_argument_op(0b00000001, NONE, NONE, shr_a_uops, 1);
+    generate_no_argument_op(0b00000010, NONE, NONE, shr_a_uops, 1);
     //SHL A
     uint32_t shl_a_uops[] = {A_SHL};
     generate_no_argument_op(0b00000011, NONE, NONE, shl_a_uops, 1);
@@ -110,86 +114,98 @@ void generate_no_argument_ops(){
 void generate_one_argument_ops(){
     // AND
     uint32_t and_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S1 | ALU_S0};
-    generate_one_argument_op(0b00001<<3, NONE, NONE, and_uops, 1, 0);
+    generate_one_argument_op(0b00001<<3, NONE, NONE, NULL, 0, and_uops, 1);
     // OR
     uint32_t or_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S2 | ALU_S1};
-    generate_one_argument_op(0b00010<<3, NONE, NONE, or_uops, 1, 0);
+    generate_one_argument_op(0b00010<<3, NONE, NONE, NULL, 0, or_uops, 1);
     // XOR
     uint32_t xor_uops[] = {A_ALU | ALU_M | ALU_S2 | ALU_S1};
-    generate_one_argument_op(0b00011<<3, NONE, NONE, xor_uops, 1, 0);
+    generate_one_argument_op(0b00011<<3, NONE, NONE, NULL, 0, xor_uops, 1);
     // NAND
     uint32_t nand_uops[] = {A_ALU | ALU_M | ALU_S2};
-    generate_one_argument_op(0b00100<<3, NONE, NONE, nand_uops, 1, 0);
+    generate_one_argument_op(0b00100<<3, NONE, NONE, NULL, 0, nand_uops, 1);
     // NOR
     uint32_t nor_uops[] = {A_ALU | ALU_M | ALU_S0};
-    generate_one_argument_op(0b00101<<3, NONE, NONE, nor_uops, 1, 0);
+    generate_one_argument_op(0b00101<<3, NONE, NONE, NULL, 0, nor_uops, 1);
     // XNOR
     uint32_t xnor_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S0};
-    generate_one_argument_oo(0b00110<<3, NONE, NONE, xnor_uops, 1, 0);
+    generate_one_argument_oo(0b00110<<3, NONE, NONE, NULL, 0, xnor_uops, 1);
     // ADD
     uint32_t add_uops[] = {FLAGS_WE | A_ALU | ALU_S3 | ALU_S0};
-    generate_one_argument_op(0b00111<<3, NONE, NONE, add_uops, 1, 0);
+    generate_one_argument_op(0b00111<<3, NONE, NONE, NULL, 0, add_uops, 1);
     // SUB
     uint32_t sub_uops[] = {FLAGS_WE | A_ALU | ALU_S2 | ALU_S1 | CIN};
-    generate_one_argument_op(0b01000<<3, NONE, NONE, sub_uops, 1, 0);
+    generate_one_argument_op(0b01000<<3, NONE, NONE, NULL, 0, sub_uops, 1);
     // ADDC
     uint32_t addc1_uops[] = {FLAGS_WE | A_ALU | ALU_S3 | ALU_S0};
-    generate_one_argument_op(0b01001<<3, CF, NONE, addc1_uops, 1, 0);
+    generate_one_argument_op(0b01001<<3, CF, NONE, NULL, 0, addc1_uops, 1);
     uint32_t addc2_uops[] = {FLAGS_WE | A_ALU | ALU_S3 | ALU_S0 | CIN};
-    generate_one_argument_op(0b01001<<3, CF, CF, addc2_uops, 1, 0);
+    generate_one_argument_op(0b01001<<3, CF, CF, NULL, 0, addc2_uops, 1);
     // SUBC
     uint32_t subc0_uops[] = {FLAGS_WE | A_ALU | ALU_S2 | ALU_S1};
-    generate_one_argument_op(0b01010<<3, CF, NONE, subc0_uops, 1, 0);
+    generate_one_argument_op(0b01010<<3, CF, NONE, NULL, 0, subc0_uops, 1);
     uint32_t subc1_uops[] = {FLAGS_WE | A_ALU | ALU_S2 | ALU_S1 | CIN};
-    generate_one_argument_op(0b01010<<3, CF, CF, subc1_uops, 1, 0);
+    generate_one_argument_op(0b01010<<3, CF, CF, NULL, 0, subc1_uops, 1);
     // CMP
     uint32_t cmp_uops[] = {FLAGS_WE | ALU_S2 | ALU_S1 | CIN};
-    generate_one_argument_op(0b01011<<3, NONE, NONE, cmp_uops, 1, 0);
+    generate_one_argument_op(0b01011<<3, NONE, NONE, NULL, 0, cmp_uops, 1);
     // JMP
     uint32_t jmp_uops[] = {IP_WE};
-    generate_one_argument_op(0b01100<<3, NONE, NONE, jmp_uops, 1, 0);
+    generate_one_argument_op(0b01100<<3, NONE, NONE, NULL, 0, jmp_uops, 1);
     // JZ/JE
     uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01101<<3, ZF, NONE, jz0_uops, 1, 0);
+    generate_one_argument_op(0b01101<<3, ZF, NONE, NULL, 0, jz0_uops, 1);
     uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01101<<3, ZF, ZF, jz1_uops, 1, 0);
+    generate_one_argument_op(0b01101<<3, ZF, ZF, NULL, 0, jz1_uops, 1);
     // JNZ/JNE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01101<<3, ZF, ZF, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01101<<3, ZF, NONE, jz1_uops, 1, 0);
+    uint32_t jnz0_uops[] = {NONE};
+    generate_one_argument_op(0b01101<<3, ZF, ZF, NULL, 0, jnz0_uops, 1);
+    uint32_t jnz1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01101<<3, ZF, NONE, NULL, 0, jnz1_uops, 1);
     // JC/JB/JNAE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, CF, NONE, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, CF, CF, jz1_uops, 1, 0);
+    uint32_t jc0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, CF, NONE, NULL, 0, jc0_uops, 1);
+    uint32_t jc1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, CF, CF, NULL, 0, jc1_uops, 1);
     // JNC/JNB/JAE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, CF, CF, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, CF, NONE, jz1_uops, 1, 0);
+    uint32_t jnc0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, CF, CF, NULL, 0, jnc0_uops, 1);
+    uint32_t jnc1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, CF, NONE, NULL, 0, jnc1_uops, 1);
     // JS/JL/JNGE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, SF, NONE, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, SF, SF, jz1_uops, 1, 0);
+    uint32_t js0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF, NONE, NULL, 0, js0_uops, 1);
+    uint32_t js1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF, SF, NULL, 0, js1_uops, 1);
     // JNS/JNL/JGE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, SF, SF, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, SF, NONE, jz1_uops, 1, 0);
+    uint32_t jns0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF, SF, NULL, 0, jns0_uops, 1);
+    uint32_t jns1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF, NONE, NULL, 0, jns1_uops, 1);
     // JG/JNLE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, NONE, NONE, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, jz1_uops, 1, 0);
+    uint32_t jg0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, NONE, NONE, NULL, 0, jg0_uops, 1);
+    uint32_t jg1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, NULL, 0, jg1_uops, 1);
     // JNG/JLE
-    uint32_t jz0_uops[] = {NONE};
-    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, jz0_uops, 1, 0);
-    uint32_t jz1_uops[] = {IP_WE};
-    generate_one_argument_op(0b01110<<3, NONE, NONE, jz1_uops, 1, 0);
+    uint32_t jng0_uops[] = {NONE};
+    generate_one_argument_op(0b01110<<3, SF|ZF, NONE, NULL, 0, jng0_uops, 1);
+    uint32_t jng1_uops[] = {IP_WE};
+    generate_one_argument_op(0b01110<<3, NONE, NONE, NULL, 0, jng1_uops, 1);
     // CALL
-    //TODO: CALL instruction
+    uint32_t call_ops_before_arg[] = {
+        SP_CNT | SP_DOWN,               //  ┐
+        SP_OE | BASE_WE | OFFSET_CLR,   //  │ PUSH IP
+        MEM_WE | IP_OE                  //  ┘
+    };
+    uint32_t call_ops_after_arg[] = {
+        IP_WE,                          //  ] MOV IP, <addr>
+        SP_CNT | SP_DOWN,               //  ┐
+        SP_OE | BASE_WE | OFFSET_CLR,   //  │ PUSH BP
+        MEM_WE | BP_OE,                 //  ┘
+        BP_WE | SP_OE,                  //  ] MOV BP, SP
+    };
+    generate_one_argument_op(0b11110001, NONE, NONE, call_ops_before_arg, 3, call_ops_after_arg, 5);
     // PUSH
     uint32_t push_ops[] = {
         SP_CNT | SP_DOWN,

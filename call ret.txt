@@ -1,0 +1,10 @@
+---CALL---
+PUSH IP
+MOV IP, <addr>
+PUSH BP
+MOV BP, SP
+
+---RET---
+MOV SP, BP
+POP BP
+POP IP
