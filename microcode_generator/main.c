@@ -73,7 +73,7 @@ void generate_one_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags,
         for(int i = 0; i < after_read_uops_count; i++){
             add_uop(
                 opcode|src, after_read_uop_start[src]+i, flags_mask, flags, 
-                (i==0)?data_read_signal:NONE | after_read_uops[i] | (i==after_read_uops_count-1)?CNT_CLR:NONE
+                (i==0)?data_read_signal[src]:NONE | after_read_uops[i] | (i==after_read_uops_count-1)?CNT_CLR:NONE
             );
         }
     }
@@ -131,7 +131,7 @@ void generate_one_argument_ops(){
     generate_one_argument_op(0b00101, NONE, NONE, NULL, 0, nor_uops, 1);
     // XNOR
     uint32_t xnor_uops[] = {A_ALU | ALU_M | ALU_S3 | ALU_S0};
-    generate_one_argument_oo(0b00110, NONE, NONE, NULL, 0, xnor_uops, 1);
+    generate_one_argument_op(0b00110, NONE, NONE, NULL, 0, xnor_uops, 1);
     // ADD
     uint32_t add_uops[] = {FLAGS_WE | A_ALU | ALU_S3 | ALU_S0};
     generate_one_argument_op(0b00111, NONE, NONE, NULL, 0, add_uops, 1);
@@ -225,11 +225,11 @@ void generate_one_argument_ops(){
 
 void generate_mov(){
     //MOV reg,lit / MOV reg,reg / MOV reg,[lit] / MOV reg,[reg] / MOV reg,[r+l]
-    uint32_t mov_to_reg_uops = {WE_IR4};
+    uint32_t mov_to_reg_uops[] = {WE_IR4};
     generate_one_argument_op(0b10001, NONE, NONE, NULL, 0, mov_to_reg_uops, 1);
     //MOV reg,[r+r]
     for(uint8_t dest_reg = 0;dest_reg<16;dest_reg++){
-        uint32_t mov_to_reg2_uops = {
+        uint32_t mov_to_reg2_uops[] = {
             OFFSET_WE | OE_IR0,
             BASE_WE | OE_IR4,
             WE | (dest_reg << WS_0to4) | MEM_OE
@@ -237,20 +237,20 @@ void generate_mov(){
         generate_no_argument_op((0b1010<<4)|dest_reg, NONE, NONE, mov_to_reg2_uops, 3);
     };
     //MOV [lit],reg
-    uint32_t mov_from_reg0_uops = {
+    uint32_t mov_from_reg0_uops[] = {
         IP_OE | BASE_WE | OFFSET_CLR | IP_CNT,
         MEM_OE | BASE_WE | OFFSET_CLR,
         MEM_WE | OE_IR0
     }; 
     generate_no_argument_op(0b10011010, NONE, NONE, mov_from_reg0_uops, 3);
     //MOV [reg],reg
-    uint32_t mov_from_reg1_uops = {
+    uint32_t mov_from_reg1_uops[] = {
         OE_IR4 | BASE_WE | OFFSET_CLR,
         MEM_WE | OE_IR0
     }; 
     generate_no_argument_op(0b10011011, NONE, NONE, mov_from_reg1_uops, 2);
     //MOV [r+l],reg
-    uint32_t mov_from_reg2_uops = {
+    uint32_t mov_from_reg2_uops[] = {
         IP_OE | BASE_WE | OFFSET_CLR | IP_CNT,
         MEM_OE | OFFSET_WE,
         OE_IR4 | BASE_WE,
@@ -259,7 +259,7 @@ void generate_mov(){
     generate_no_argument_op(0b10011100, NONE, NONE, mov_from_reg2_uops, 4);
     //MOV [r+r],reg
     for(uint8_t base_reg = 0;base_reg<16;base_reg++){
-        uint32_t mov_from_reg3_uops = {
+        uint32_t mov_from_reg3_uops[] = {
             OFFSET_WE | OE_IR4,
             BASE_WE | OE | (base_reg << OS_0to4),
             MEM_WE | OE_IR0
