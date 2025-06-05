@@ -294,8 +294,6 @@ int main(){
     generate_one_argument_ops();
     generate_mov();
 
-    printBits(4,&ucode[0b0000001000000000]);
-
     //write microcode to files
     FILE *ucode0 = fopen("ucode0.bin","wb");
     for(int i = 0;i<65536;i++){
