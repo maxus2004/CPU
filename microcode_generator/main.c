@@ -274,5 +274,28 @@ int main(){
     generate_one_argument_ops();
     generate_mov();
 
-    //TODO: write microcode to files
+    FILE *ucode0 = fopen("ucode0.bin","wb");
+    for(int i = 0;i<65536;i++){
+        uint8_t byte = ucode[i] >> 0;
+        fwrite(&byte, 1, 1, ucode0);
+    }
+    fclose(ucode0);
+    FILE *ucode1 = fopen("ucode1.bin","wb");
+    for(int i = 0;i<65536;i++){
+        uint8_t byte = ucode[i] >> 8;
+        fwrite(&byte, 1, 1, ucode1);
+    }
+    fclose(ucode1);
+    FILE *ucode2 = fopen("ucode2.bin","wb");
+    for(int i = 0;i<65536;i++){
+        uint8_t byte = ucode[i] >> 16;
+        fwrite(&byte, 1, 1, ucode2);
+    }
+    fclose(ucode2);
+    FILE *ucode3 = fopen("ucode3.bin","wb");
+    for(int i = 0;i<65536;i++){
+        uint8_t byte = ucode[i] >> 24;
+        fwrite(&byte, 1, 1, ucode3);
+    }
+    fclose(ucode3);
 }
