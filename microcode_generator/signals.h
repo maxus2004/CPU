@@ -25,10 +25,12 @@
 #define OS_IR0 (1<<22)
 #define OE (1<<23)
 //EEPROM 3
+#define OS_0to4 24
 #define OS0 (1<<24)
 #define OS1 (1<<25)
 #define OS2 (1<<26)
 #define OS3 (1<<27)
+#define WS_0to4 28
 #define WS0 (1<<28)
 #define WS1 (1<<29)
 #define WS2 (1<<30)

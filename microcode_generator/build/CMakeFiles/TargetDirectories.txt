@@ -1,3 +1,0 @@
-/home/max/code/CPU/microcode_generator/build/CMakeFiles/generator.dir
-/home/max/code/CPU/microcode_generator/build/CMakeFiles/edit_cache.dir
-/home/max/code/CPU/microcode_generator/build/CMakeFiles/rebuild_cache.dir

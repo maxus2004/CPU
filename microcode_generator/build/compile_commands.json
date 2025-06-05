@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/max/code/CPU/microcode_generator/build",
-  "command": "/usr/bin/cc   -Wno-error=implicit-function-declaration -g -o CMakeFiles/generator.dir/main.c.o -c /home/max/code/CPU/microcode_generator/main.c",
-  "file": "/home/max/code/CPU/microcode_generator/main.c",
-  "output": "CMakeFiles/generator.dir/main.c.o"
-}
-]
