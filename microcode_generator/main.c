@@ -2,6 +2,21 @@
 #include <stdint.h>
 #include "signals.h"
 
+void printBits(size_t const size, void const * const ptr)
+{
+    unsigned char *b = (unsigned char*) ptr;
+    unsigned char byte;
+    int i, j;
+    
+    for (i = size-1; i >= 0; i--) {
+        for (j = 7; j >= 0; j--) {
+            byte = (b[i] >> j) & 1;
+            printf("%u", byte);
+        }
+    }
+    puts("");
+}
+
 uint32_t ucode[65536];
 
 void add_uop(uint8_t opcode, uint8_t cnt, uint8_t flags_mask, uint8_t flags, uint32_t uop){
@@ -22,7 +37,7 @@ void generate_no_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags, 
     for(int i = 0; i < uops_count; i++){
         add_uop(
             opcode, 2+i, flags_mask, flags, 
-            uops[i] | (i==uops_count-1)?CNT_CLR:NONE
+            uops[i] | ((i==uops_count-1)?CNT_CLR:NONE)
         );
     }
 }
@@ -73,7 +88,7 @@ void generate_one_argument_op(uint8_t opcode, uint8_t flags_mask, uint8_t flags,
         for(int i = 0; i < after_read_uops_count; i++){
             add_uop(
                 opcode|src, after_read_uop_start[src]+i, flags_mask, flags, 
-                (i==0)?data_read_signal[src]:NONE | after_read_uops[i] | (i==after_read_uops_count-1)?CNT_CLR:NONE
+                ((i==0)?data_read_signal[src]:NONE) | after_read_uops[i] | ((i==after_read_uops_count-1)?CNT_CLR:NONE)
             );
         }
     }
@@ -278,6 +293,8 @@ int main(){
     generate_no_argument_ops();
     generate_one_argument_ops();
     generate_mov();
+
+    printBits(4,&ucode[0b0000001000000000]);
 
     //write microcode to files
     FILE *ucode0 = fopen("ucode0.bin","wb");
