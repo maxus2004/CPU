@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include "signals.h"
 
-uint32_t ucode[65536] = {0};
+uint32_t ucode[65536];
 
 void add_uop(uint8_t opcode, uint8_t cnt, uint8_t flags_mask, uint8_t flags, uint32_t uop){
     for(uint8_t f = 0b000; f<=0b111; f++){
@@ -269,11 +269,17 @@ void generate_mov(){
 }
 
 int main(){
+    //fill with STOPs
+    for(int i = 0;i<65536;i++){
+        ucode[i] = STOP;
+    }
+
     generate_fetch();
     generate_no_argument_ops();
     generate_one_argument_ops();
     generate_mov();
 
+    //write microcode to files
     FILE *ucode0 = fopen("ucode0.bin","wb");
     for(int i = 0;i<65536;i++){
         uint8_t byte = ucode[i] >> 0;
